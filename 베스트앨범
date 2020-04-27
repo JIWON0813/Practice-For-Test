@@ -1,0 +1,72 @@
+import java.util.*;
+//프로그래머스 Level 3 베스트앨범
+// 해쉬맵을 이용한 문제해결
+class Solution {
+    public int[] solution(String[] ge, int[] p) {
+	        int[] answer = {};
+	        HashMap<String , Integer> sum = new HashMap();
+	        HashMap<String , int[]> listval = new HashMap();
+	        HashMap<String , int[]> listindex = new HashMap();
+	        Queue<String> list = new LinkedList();
+	        ArrayList<String> newlist = new ArrayList();
+	        for(int i = 0 ; i < ge.length ;i++) {
+	        	String name = ge[i];
+	        	int val = p[i];
+	        	if(!sum.containsKey(name)) {
+	        		sum.put(name, val);
+	        		listval.put(name, new int[] {val,0});
+	        		listindex.put(name, new int[] {i, -1});
+	        		list.add(name);
+	        	}
+	        	else {
+	        		sum.put(name, sum.get(name)+val);
+	        		int[] vallist = listval.get(name);
+	        		int[] in = listindex.get(name);
+	        		for(int a = 0 ; a < 2 ; a++) {
+	        			if(val > vallist[a]) {
+	        				int temp = vallist[a];
+	        				int temin = in[a];
+	        				vallist[a] = val;
+	        				in[a] = i;
+	        				if(a+1 != 2) {
+	        					vallist[a+1] = temp;
+	        					in[a+1] =  temin;
+	        					break;
+	        				}
+	        			}
+	        		}
+	        		listval.put(name, vallist);
+	        		listindex.put(name, in);
+	        	}
+	        }
+	        newlist.add(list.poll());
+	        while(!list.isEmpty()) {
+	        	String check = list.poll();
+	        	int si = newlist.size();
+	        	for(int i = 0 ; i < si ;i++) {
+	        		if(sum.get(check) >= sum.get(newlist.get(i))) {
+	        			newlist.add(i, check);
+	        			break;
+	        		}    
+	        		else {
+	        			if(i == newlist.size()-1) {
+	        				newlist.add(check);
+	        			}
+	        		}
+	        	}
+	        }
+	        ArrayList<Integer> temp = new ArrayList();
+	        for(int i = 0 ; i < newlist.size() ;i++) {
+	        	int[] te = listindex.get(newlist.get(i));
+	        	temp.add(te[0]);
+	        	if(te[1] != -1) {
+	        		temp.add(te[1]);
+	        	}
+	        }
+	        answer = new int[temp.size()];
+	        for(int i = 0 ; i < temp.size() ; i++) {
+	        	answer[i] = temp.get(i);
+	        }
+	        return answer;
+	    }
+}
