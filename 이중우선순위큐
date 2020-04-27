@@ -1,0 +1,84 @@
+import java.util.*;
+//프로그래머스 Level 3 이중우선순위큐 문제
+//연결리스트 활용
+class Solution {
+    public int[] solution(String[] s) {
+		int[] answer = {};
+		int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
+		LinkedList<Integer> list = new LinkedList();
+		for (int i = 0; i < s.length; i++) {
+			String[] sp = s[i].split(" ");
+			if (sp[0].equals("I")) {
+				int val = Integer.parseInt(sp[1]);
+				list.add(val);
+				if (max < val)
+					max = val;
+				if (min > val)
+					min = val;
+			} else if (sp[0].equals("D")) {
+				if (!list.isEmpty()) {
+					if (sp[1].equals("1"))
+						for (int z = 0; z < list.size(); z++) {
+							int val = list.get(z);
+							if (val == max) {
+								list.remove(z);
+								max = findmax(list);
+								min = findmin(list);
+								break;
+							}
+						}
+					else {
+						for (int z = 0; z < list.size(); z++) {
+							int val = list.get(z);
+							if (val == min) {
+								list.remove(z);
+								max = findmax(list);
+								min = findmin(list);
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		if (list.isEmpty())
+			return new int[] { 0, 0 };
+		else
+
+		{
+			max = findmax(list);
+			min = findmin(list);
+			return new int[] { max, min };
+		}
+	}
+
+	int findmax(LinkedList<Integer> list) {
+		int max = Integer.MIN_VALUE;
+		if (!list.isEmpty()) {
+			Iterator<Integer> iter = list.iterator();
+			while (iter.hasNext()) {
+				int val = iter.next();
+				if (max < val)
+					max = val;
+			}
+
+			return max;
+		} else
+			return max;
+	}
+
+	int findmin(LinkedList<Integer> list) {
+		int min = Integer.MAX_VALUE;
+		if (!list.isEmpty()) {
+			Iterator<Integer> iter = list.iterator();
+			while (iter.hasNext()) {
+				int val = iter.next();
+				if (min > val)
+					min = val;
+			}
+
+			return min;
+		} else
+			return min;
+	}
+}
