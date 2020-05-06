@@ -1,0 +1,65 @@
+//2017 카카오코드 예선
+//카카오프렌즈 컬러링북
+//DFS를 이용한 문제해결
+
+class Solution {
+  static int Maxm = 0;
+	static int Maxn = 0;
+	static boolean[][] checkmap; //방문확인
+	
+	public int[] solution(int m, int n, int[][] p) {
+	      int numberOfArea = 0;
+	      int maxSizeOfOneArea = 0;      
+	      Maxm = m;
+	      Maxn = n;
+	      checkmap = new boolean[m][n];
+	      for(int i = 0 ; i < m ; i++) {
+	    	  for(int j = 0 ; j < n ; j++) {
+	    		  if(p[i][j] != 0 && !checkmap[i][j]) //방문을 안했고 값이 있으면 탐색
+            {
+	    			  int val = dfs(i,j,p[i][j], p);
+	    			  if(val > maxSizeOfOneArea) // 가장 큰 넓이 비교 후 저장
+	    				  maxSizeOfOneArea = val;
+	    			  numberOfArea++; // 탐색마다 새로운 지역이 발견됐으므로 카운트 +1
+	    		  }
+	    	  }
+	      }
+
+	      
+	      int[] answer = new int[2];
+	      answer[0] = numberOfArea;
+	      answer[1] = maxSizeOfOneArea;
+	      return answer;
+	  }
+	
+	public int dfs(int M, int N , int eqval , int[][] p) {
+		int count = 0;
+		checkmap[M][N] = true;
+    //오른쪽
+		if(M+1 < Maxm) {
+			if(p[M+1][N] == eqval && !checkmap[M+1][N])
+				count += dfs(M+1,N,eqval,p);
+		}
+    //아래쪽
+		if(N+1 < Maxn) {
+			if(p[M][N+1] == eqval && !checkmap[M][N+1])
+				count += dfs(M,N+1,eqval,p);
+		}
+    //위쪽
+		if(N-1 > -1) {
+			if(p[M][N-1] == eqval && !checkmap[M][N-1])
+				count += dfs(M,N-1,eqval,p);
+		}
+    //왼쪽
+		if(M-1 > -1) {
+			if(p[M-1][N] == eqval && !checkmap[M-1][N])
+				count += dfs(M-1,N,eqval,p);
+		}
+		
+		if(count == 0) {
+			return 1;
+		}
+		
+		return count+1;
+	}
+}
