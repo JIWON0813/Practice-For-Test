@@ -1,0 +1,54 @@
+//2018 카카오 블라인드 채용 뉴스 
+
+import java.util.*;
+
+class Solution {
+    
+  public int solution(String s1, String s2) {
+		int answer = 0;
+		LinkedList<String> s1list = new LinkedList();
+		LinkedList<String> s2list = new LinkedList();
+		s1 = s1.toUpperCase();
+		s2 = s2.toUpperCase();
+		String check = "[A-Z]";
+		for (int i = 0; i + 2 <= s1.length(); i++) {
+			if (s1.substring(i, i + 1).matches(check) && s1.substring(i + 1, i + 2).matches(check))
+				s1list.add(s1.substring(i, i + 2));
+		}
+		for (int i = 0; i + 2 <= s2.length(); i++) {
+			if (s2.substring(i, i + 1).matches(check) && s2.substring(i + 1, i + 2).matches(check))
+				s2list.add(s2.substring(i, i + 2));
+		}
+		// �߰� ��
+
+		double count = 0;
+		if (s1list.size() > s2list.size()) {
+			LinkedList<String> temp = s1list;
+			s1list = s2list;
+			s2list = temp;
+		}
+		LinkedList<String> iter2 = (LinkedList<String>) s2list.clone();
+		Iterator<String> iter = s1list.iterator();
+		while (iter.hasNext()) {  
+			String val = iter.next();		
+			int z = 0;
+			while (z < iter2.size()) {
+				if (iter2.get(z).equals(val)) {
+					iter2.remove(z);
+					count++;					
+					break;
+				}
+				z++;
+			}
+		}
+
+		double mo = s1list.size() + s2list.size() - count; 
+		if (s2list.size() == 0) {
+			if (s1list.size() == 0)
+				return 65536;
+		}
+		answer = (int) (65536 * (count / mo)); 
+
+		return answer;
+	}
+}
