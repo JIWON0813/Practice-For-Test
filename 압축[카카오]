@@ -1,0 +1,53 @@
+//2018 카카오 블라인드 채용 3차 
+
+import java.util.*;
+
+class Solution {
+ public int[] solution(String msg) {
+	      int[] answer = {};
+	      HashMap<String, Integer> list = new HashMap();
+	      String[] s = msg.split("");
+	      Queue<Integer> v = new LinkedList();
+
+	      for(int i = 1 ; i < 27 ; i++) {
+	    	  list.put(String.valueOf(((char)(64+i))), i);
+	      }
+          if(msg.length() == 1)
+	    	  return new int[] {list.get(msg)};
+	      int i = 0 ;
+	      int count = 27;
+	      boolean plus = true;
+	      String val = "";
+	      while(i+1 < s.length) {	    	  	    	  
+	    	  if(plus) {
+	    		  val = "";
+	    		  val = s[i] + s[i+1];
+	    	  }
+	    	  else
+	    		  val = val + s[i+1];
+	    	  if(list.containsKey(val)) {
+	    		  i++;
+	    		  plus = false;
+	    		  if(i+1 == s.length) {
+	    			  v.add(list.get(val));
+	    		  }
+	    	  }
+	    	  else {
+	    		  list.put(val, count);
+	    		  count++;	    		  
+	    		  v.add(list.get(val.substring(0, val.length()-1)));
+	    		  val = "";
+	    		  plus = true;
+	    		  i++;
+	    		  if(i+1 == s.length) {
+	    			  v.add(list.get(s[i]));
+	    		  }
+	    	  }
+	      }
+	      answer = new int[v.size()];
+	      for(int a = 0 ; a < answer.length; a++) {
+	    	  answer[a] = v.poll();
+	      }
+	      return answer;
+	  }
+}
