@@ -1,0 +1,43 @@
+// 2019 블라인드 채용 
+
+import java.util.*;
+
+class Solution {
+public String[] solution(String[] record) {
+        String[] answer = {};
+        HashMap<String , String> uid = new HashMap();
+        Queue<String> list = new LinkedList();
+        Queue<String> list2 = new LinkedList();
+        
+        for(int i = 0 ; i < record.length ; i++) {
+        	String[] sp = record[i].split(" ");
+        	if(sp[0].equals("Enter")) {
+        		list.add(sp[0]);
+        		list2.add(sp[1]);
+        		uid.put(sp[1], sp[2]);
+        	}
+        	else if(sp[0].equals("Leave")) {
+        		list.add(sp[0]);
+        		list2.add(sp[1]);
+        	}
+        	else {
+        		uid.put(sp[1], sp[2]);
+        	}
+        }
+        answer = new String[list.size()];
+        int count = 0;
+        while(!list.isEmpty()) {
+        	String val = list.poll();
+        	if(val.equals("Enter")) {
+        		answer[count] = uid.get(list2.poll()) + "님이 들어왔습니다.";
+        		count++;
+        	}
+        	else{
+        		answer[count] = uid.get(list2.poll()) + "님이 나갔습니다.";
+        		count++;
+        	}
+        }
+        
+        return answer;
+    }
+}
