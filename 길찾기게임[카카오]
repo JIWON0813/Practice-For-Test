@@ -1,0 +1,140 @@
+// 카카오 2019 블라인드 채용 길 찾기 게임
+// 이진트리를 구현해야 했으면 트리구조 연습겸 코딩
+// 예외적인 경우 없이 이진트리 상태로 값을 준다고 해서 내림차순 정렬 후 순차적으로 데이터 삽입
+
+
+import java.util.*;
+
+class Solution {
+   public int[][] solution(int[][] node) {
+		int[][] answer = new int[2][node.length];
+		Tree tree = new Tree();
+    
+    //기존 인덱스 번호를 저장해야해서 Key값으로 좌표 (x + " " + y) 형태의 문자열로 저장 ex) key(3 11), value(1);
+		HashMap<String, Integer> save = new HashMap();
+		for(int i = 0 ; i < node.length ; i++) {
+			String val = "" + node[i][0] + " " + node[i][1];
+			save.put(val, i);
+		}
+		
+		//y축 기준으로 내림차순
+		Arrays.sort(node, new Comparator<int[]>() {
+			@Override
+			public int compare(final int[] entry1, final int[] entry2) {
+				final int time1 = entry1[1];
+				final int time2 = entry2[1];
+				return Integer.compare(time2, time1);
+			}
+		});
+		
+		//삽입
+		for(int i = 0 ; i < node.length ; i++) {
+			tree.insert( save.get(""+node[i][0] + " "+node[i][1])+1, node[i][0], node[i][1]);
+		}
+    
+    //전위 후위 리스트 생성
+		tree.pre(tree.getroot());
+		tree.post(tree.getroot());
+		
+    //리스트를 배열에 옮김
+		LinkedList list = tree.prelist;
+		int[] arr = new int[list.size()];
+		for(int i = 0 ; i < arr.length ;i++) {
+			arr[i] = (int) list.poll();
+		}
+		answer[0] = arr;
+		list = tree.postlist;
+		int[] arr2 = new int[list.size()];
+		for(int i = 0 ; i < arr2.length ;i++) {
+			arr2[i] = (int) list.poll();
+		}
+		answer[1] = arr2;
+		return answer;
+	}
+
+}
+
+class TreeNode {
+	int data;
+	int x = 0;
+	int y = 0;
+	TreeNode left;
+	TreeNode right;
+
+	public TreeNode(int data, int x, int y) {
+		this.data = data;
+		this.x = x;
+		this.y = y;
+		this.left = null;
+		this.right = null;
+	}
+
+	public int getval() {
+		return this.data;
+	}
+}
+
+class Tree {
+	private TreeNode root;
+	int size = 0;
+	
+	public void insert(int val, int x, int y) {
+		if(root == null) {
+			this.root = new TreeNode(val,x,y);
+			size++;
+		}
+		else {
+			TreeNode temp = root;
+			while(true) {
+				if(temp.x > x) {
+					if(temp.left == null) {
+						temp.left = new TreeNode(val,x,y);
+						size++;
+						return;
+					}
+					else {
+						temp = temp.left;
+					}
+				}
+				else {
+					if(temp.right == null) {
+						temp.right = new TreeNode(val,x,y);
+						size++;
+						return;
+					}
+					else {
+						temp = temp.right;						
+					}
+				}
+			}
+			
+		}		
+		
+	}//end of insert
+	LinkedList<Integer> prelist = new LinkedList();
+	public void pre(TreeNode t) {
+		if(t == null)
+			return ;
+		prelist.add(t.getval());
+		pre(t.left);
+		pre(t.right);
+	}
+	LinkedList<Integer> postlist = new LinkedList();
+	public void post(TreeNode t) {
+		if(t == null)
+			return ;		
+		post(t.left);
+		post(t.right);
+		postlist.add(t.getval());
+	}
+	
+	public TreeNode getroot() {
+		return root;
+	}
+	public LinkedList<Integer> getprelist(){
+		return prelist;
+	}
+	public LinkedList<Integer> getpostlist(){
+		return postlist;
+	}
+}
