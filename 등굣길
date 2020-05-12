@@ -1,0 +1,58 @@
+// 프로그래머스 Level 3 등굣길
+// 재귀로 푸니 시간초과가 나서 dp로 수정후 통과
+// dp연습하기 좋은 문제였음
+
+class Solution {
+    public int solution(int m, int n, int[][] p) {
+		int answer = 0;		
+		int[][] board = new int[m][n];
+		int[][] dp = new int[m][n];
+		int mo = 1000000007;
+		for (int i = 0; i < p.length; i++) {
+			board[p[i][0] - 1][p[i][1] - 1] = 1;
+		}
+		boolean check = true;
+		for(int i = 0 ; i < m ; i++) {
+			if(board[i][0] == 1) {
+				check = false;
+			}
+			if(check)
+				dp[i][0] = 1;
+			else
+				dp[i][0] = 0;
+		}
+		check = true;
+		for(int i = 0 ; i < n ; i++) {
+			if(board[0][i] == 1) {
+				check = false;
+			}
+			if(check)
+				dp[0][i] = 1;
+			else
+				dp[0][i] = 0;
+		}
+		
+		for (int i = 1; i < m; i++) {
+
+			for (int j = 1; j < n; j++) {
+				if (board[i][j] != 1) {
+
+					if (i - 1 > -1) {
+						if (board[i - 1][j] != 1)
+							dp[i][j] += dp[i - 1][j];
+						dp[i][j] = dp[i][j]%mo;
+					}
+					if (j - 1 > -1) {
+						if (board[i][j - 1] != 1)
+							dp[i][j] += dp[i][j - 1];
+					}
+					dp[i][j] = dp[i][j]%mo;
+
+				}
+
+			}
+		}
+
+		return dp[m - 1][n - 1]%mo;
+	}
+}
