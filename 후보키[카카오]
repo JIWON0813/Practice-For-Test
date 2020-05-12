@@ -1,0 +1,90 @@
+// 2019 카카오 블라인드 테스트 후보키
+// 조합을 이용해 후보키 리스트를 만들고 하나씩 후보키에 적합한지 검사
+// 최소성을 따지기 위해 이미 후보키를 포함한 리스트는 패스하도록 설정
+
+import java.util.*;
+
+class Solution {
+    static Vector<String> list = new Vector();
+	
+	public int solution(String[][] re) {
+        int answer = 0; 
+        int[] arr = new int [re[0].length];
+        for(int i = 0 ; i < arr.length ;i++) {
+        	arr[i] = i+1;
+        }
+        boolean[] visited = new boolean[arr.length];
+        for(int i = 1 ; i <= arr.length ;i++)
+        	combination(arr,visited,0,arr.length,i);
+        
+        HashSet<String> pri = new HashSet();
+        
+        for(String val : list) {       	
+        	boolean haspri = true;
+        	
+        	if(!pri.isEmpty()) {
+        		for(String s : pri) {
+        			String[] split = s.split("");
+        			int count = 0;
+        			for(int i = 0 ; i < split.length ;i++) {
+        				if(val.contains(split[i]))
+        					count++;
+        			}
+        			if(count == split.length) {
+        				haspri = false;
+        				break;
+        			}
+        				
+        		}
+        	} // 더 작은 집합의 후보키가 있다면 패스(최소성)       	
+        	if(haspri) { // 후보키가 될 수 있는지 체크
+        		String[] sp = val.split("");
+        		boolean check = true;        	
+            	HashSet<String> checklist = new HashSet();       	
+            		for(int i = 0 ; i < re.length ; i++) {
+            			String temp = "";
+            			for(int j = 0 ; j < sp.length ; j++) {
+            				temp += re[i][Integer.parseInt(sp[j])-1];
+            			}
+            			if(checklist.contains(temp)) {
+            				check = false;
+            				break;
+            			}
+            			else
+            				checklist.add(temp);
+            		}
+            		if(check) {
+            			String inpri = "";
+            			for(int i = 0 ; i < sp.length ;i++) {
+            				inpri += sp[i];
+            			}
+            			pri.add(inpri);
+            			answer++;
+            		}
+        	}      	
+            		
+        	
+        	
+        }
+        
+        
+        return answer;
+    }
+	static void combination(int[] arr, boolean[] visited, int start, int n, int r) { // 조합(온라인 라이브러리 사용)
+        if (r == 0) {
+        	String val = "";
+        	for (int i = 0; i < n; i++) {
+                if (visited[i] == true)
+                    val += arr[i];
+            }
+        	list.add(val);
+            return;
+        }
+
+        for (int i = start; i < n; i++) {
+            visited[i] = true;
+            combination(arr, visited, i + 1, n, r - 1);
+            visited[i] = false;
+        }
+    }
+}
