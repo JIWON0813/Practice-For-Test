@@ -1,0 +1,97 @@
+// 2018 카카오 블라인드 테스트 3차 파일명 정렬
+// 파일에 적합한 클래스를 만들어서 비교하면 소스가 더 깔끔했을거란 아쉬움이 있음
+// TAIL에 대한 구분을 따로 안해줘도 됐는데 그 부분까지 신경써서 시간이 좀 더 오래걸리고 코드가 더 많아진 것 
+
+import java.util.*;
+
+class Solution {
+    public String[] solution(String[] file) {
+        String[] answer = new String[file.length];
+        Vector<String> list = new Vector();
+        list.add(file[0]);
+        for(int i = 1 ; i < file.length ; i++) {
+        	boolean doin = true;
+        	int size = list.size();
+        	for(int a = 0 ; a < size ; a++) {
+        		boolean check = checkstring(file[i],list.get(a));
+        		if(check) {
+        			list.add(a, file[i]);
+        			doin = false;
+        			break;
+        		}
+        	}
+        	if(doin)
+        		list.add(file[i]);
+        }
+        for(int i = 0 ; i < answer.length ;i++) {
+        	answer[i] = list.get(i);
+        }
+        return answer;
+    }
+
+	private boolean checkstring(String fval, String listval) {
+		String fname = "";
+		String fnum = "";
+		String ftail = "";
+		String listname = "";
+		String listnum = "";
+		String listtail = "";
+		String checknum = "[0-9]";
+		int count = 0;
+		boolean endname = true;
+		for(int i = 0 ; i < fval.length() ; i++) {			
+			if(!fval.substring(i, i+1).matches(checknum) && endname) {
+				fname += fval.substring(i, i+1);
+			}
+			else {
+				endname = false;
+				if(count == 5 || !fval.substring(i, i+1).matches(checknum) ) {
+					ftail = fval.substring(i, fval.length());
+					break;
+				}
+				else{
+					fnum += fval.substring(i, i+1);
+					count++;
+				}
+			}
+		}
+		count = 0;
+		endname = true;
+		for(int i = 0 ; i < listval.length() ; i++) {
+			if(!listval.substring(i, i+1).matches(checknum) && endname) {
+				listname += listval.substring(i, i+1);
+			}
+			else {
+				endname = false;
+				if(count == 5 || !listval.substring(i, i+1).matches(checknum) ) {
+					listtail = listval.substring(i, listval.length());
+					break;
+				}
+				else{
+					listnum += listval.substring(i, i+1);
+					count++;
+				}
+			}
+		}
+		// end of insert
+		fname = fname.toLowerCase();
+		listname = listname.toLowerCase();
+		int ncheck = fname.compareTo(listname);
+		if(ncheck == 0) {
+			int fn = Integer.parseInt(fnum);
+			int ln = Integer.parseInt(listnum);
+			if(fn >= ln)
+				return false;
+			else
+				return true;
+				
+		}
+		else if(ncheck < 0)
+			return true;
+		else
+			return false;
+
+	}
+	
+	
+}
