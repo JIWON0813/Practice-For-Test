@@ -1,0 +1,68 @@
+// 2018 카카오 블라인드 테스트 3차 방금그곡
+// 특별히 어려운 자료구조를 요하진 않지만 고려해야 할 것이 꽤 있었음
+// 때문에 고려하지 못했던 케이스를 위해 계속 수정하느라 소스 가독성이 
+
+import java.util.*;
+
+class Solution {
+public String solution(String m, String[] info) {
+	      String answer = "";
+	      String[][] splist = new String[info.length][];
+	      HashMap<String, Integer> listtime = new HashMap();
+	      for(int i = 0 ; i < info.length ;i++) {
+	    	  splist[i] = info[i].split(",");
+	    	  String[] starttime = splist[i][0].split(":");
+	    	  String[] endtime = splist[i][1].split(":");
+	    	  int hour = Integer.parseInt(endtime[0]) - Integer.parseInt(starttime[0]);
+	    	  int min = Integer.parseInt(endtime[1]) - Integer.parseInt(starttime[1]);
+	    	  if(min < 0) {
+	    		  hour--;
+	    		  min = 60 + min;
+	    	  }
+	    	  int time = hour*60 + min;
+	    	  String val = "";
+	    	  int count = 0;
+	    	  for(int a = 0 ; a < time ; a++) {
+	    		  if(count == splist[i][3].length())
+	    			  count = 0;
+	    		  val += splist[i][3].charAt(count);
+	    		  count++;
+	    		  if(count == splist[i][3].length())
+	    			  count = 0;
+	    		  else if(splist[i][3].charAt(count) == '#') {
+	    			  val += splist[i][3].charAt(count);
+	    			  count++;
+	    		  }
+	    	  }
+	    	  splist[i][3] = val;
+	    	  listtime.put(splist[i][2], time);
+	      }
+	      int max = 0;
+	      boolean check = false;
+	      for(int i = 0 ; i < splist.length ; i++) {
+	    	  if(splist[i][3].contains(m)) {
+	    		  if(m.charAt(m.length()-1) == '#') {
+	    			  if(max < listtime.get(splist[i][2])) {
+	    				  max = listtime.get(splist[i][2]);
+	    				  check = true;
+	    				  answer = splist[i][2];
+	    			  }
+	    			  
+	    		  }
+	    		  else {
+	    			  splist[i][3] = splist[i][3].replace(m+"#", "");
+	    			  if(splist[i][3].contains(m)) {
+	    				  if(max < listtime.get(splist[i][2])) {
+		    				  max = listtime.get(splist[i][2]);
+		    				  check = true;
+		    				  answer = splist[i][2];
+		    			  }
+	    			  }
+	    		  }
+	    	  }
+	      }
+	      if(answer.equals(""))
+	    	  answer = "(None)";
+	      return answer;
+	  }
+}
