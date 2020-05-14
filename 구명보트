@@ -1,0 +1,57 @@
+// 프로그래머스 Level 2 구명보트
+// Deque연습하기 좋은 문제라 Deque 구현 
+
+import java.util.*;
+
+class Solution {
+   public int solution(int[] p, int limit) {
+		if(p.length == 1)
+			return 1;
+        int answer = 0;
+        Deque<Integer> list = new ArrayDeque();
+        Arrays.parallelSort(p);
+        for(int val : p) {
+        	list.add(val);
+        }
+        int first = list.poll();
+        int last = list.pollLast();
+        if(list.isEmpty()) {
+        	if(first+last > limit)
+        		return 2;
+        	else
+        		return 1;
+        }       	
+        while(!list.isEmpty()) {
+        	if(first+last <= limit) {
+        		answer++;
+        		first = list.poll();
+        		if(list.isEmpty()) {
+        			return answer+1;
+        		}
+        		last = list.pollLast();
+                if(list.isEmpty()) {
+        			if(first+last <= limit) {
+        				return answer+1;
+        			}
+        			else
+        				return answer+2;
+        		}
+        	}
+        	else {
+        		last = list.pollLast();
+        		answer++;
+        		if(list.isEmpty()) {
+        			if(first+last <= limit) {
+        				return answer+1;
+        			}
+        			else
+        				return answer+2;
+        		}
+        	}
+        }
+        
+        
+        
+        return answer;
+    }
+}
