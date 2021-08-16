@@ -1,0 +1,44 @@
+    // 2021.08.16 [카카오] 신규 아이디 추천
+    // 다른 사람의 풀이를 보니 temp = temp.replaceAll("^[.]|[.]$",""); 란 정규표현식이 있었음
+    // 그냥 String으로 하려다가 StringBuilder 사용
+    // 처음 및 마지막 문자가 .일때는 이후에도 적용되길래 따로 함수로 뺐다
+    // 전체적으로 재사용이 가능하도록 하나의 공용함수로 만들까 하다가 문제 목적이 정규표현식같아 패스
+    
+    public String solution(String new_id) {
+        		 StringBuilder answer = new StringBuilder();
+        
+        answer.append(new_id.toLowerCase()
+			 			    .replaceAll("[^a-z0-9-_.]", "")
+			 			    .replaceAll("[.]{2,}", "."));
+
+        answer = checkStartAndEnd(answer);
+ 
+        if(answer.length() == 0) {
+        	answer.append("a");
+        }
+        if(answer.length() > 15) {
+        	answer = new StringBuilder(answer.substring(0, 15));
+            answer = checkStartAndEnd(answer);
+        }
+
+        while(answer.length() < 3) {
+        	answer.append(answer.charAt(answer.length()-1));
+        }
+        			   
+        return answer.toString();
+    }
+    
+    public StringBuilder checkStartAndEnd(StringBuilder answer){
+        if(answer.length() != 0){
+            if(answer.charAt(0) == '.') {
+        	answer = new StringBuilder(answer.substring(1));
+            }
+        }
+        if(answer.length() != 0){
+            if(answer.charAt(answer.length()-1) == '.') {
+        	answer = new StringBuilder(answer.substring(0, answer.length()-1));
+            }
+        }
+        
+        return answer;
+    }
