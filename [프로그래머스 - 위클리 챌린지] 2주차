@@ -1,0 +1,46 @@
+// for문으로 문제 해결해보려다가 Stream 연습하기 좋을 것 같아서 Stream 사용
+// 문법이 C#과 너무 달라서 이번에 새로 배운게 많음...
+
+public String solution(int[][] arr) {
+        String answer = "";
+        
+        arr = this.changeXToY(arr);
+        
+        for(int i=0; i < arr.length ;i++) {  
+        	List<Integer> list = Arrays.stream(arr[i]).boxed().collect(Collectors.toList());
+        	int max = Arrays.stream(arr[i]).max().orElse(0);
+        	int min = Arrays.stream(arr[i]).min().orElse(0);
+        	int maxCount = Collections.frequency(list, max);
+        	int minCount = Collections.frequency(list, min);
+        	if((arr[i][i] == max && maxCount == 1) || (arr[i][i] == min && minCount == 1)) {
+        		list.remove(i);
+        	}
+        	double result = list.stream().mapToInt(x -> x).average().orElse(0);
+        	answer += this.GetScore(result);
+        }
+        return answer;
+    }
+	
+	public int[][] changeXToY(int[][] arr) {
+		for(int i= 0 ; i < arr.length ;i++) {
+			for(int j = i ; j < arr.length ; j++) {
+				int temp = arr[i][j];
+				arr[i][j] = arr[j][i];
+				arr[j][i] = temp;
+			}
+		}		
+		return arr;
+	}
+	
+	public String GetScore(double score) {
+		if(score >= 90)
+			return "A";
+		if(score >= 80)
+			return "B";
+		if(score >= 70)
+			return "C";
+		if(score >= 50)
+			return "D";
+
+		return "F";
+	}
