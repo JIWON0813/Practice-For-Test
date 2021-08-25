@@ -3,32 +3,32 @@
   
 class Solution {
 	public String solution(String[] table, String[] languages, int[] preference) {
-        StringBuilder answer = null;
-        int max = 0;
-        HashMap<String, Integer> map = null;      
-        
-        for(String com : table) {
-        	String[] sp = com.split(" ");
-        	map = new HashMap<>();
-        	
-        	for(int i = 1; i < sp.length ;i++) {
-        		map.put(sp[i], sp.length - i);
-        	}
-        	
-        	int sum = 0;   	
-        	for(int i = 0 ; i < languages.length ;i++) {
-        		sum += IsValueNull(map.get(languages[i])) * preference[i];
-        	}
-        	if(sum > max) {
-        		max = sum;
-        		answer = new StringBuilder(sp[0]);
-        	}
-        	else if(sum == max && answer.toString().compareTo(sp[0]) > 0) {
-        		answer = new StringBuilder(sp[0]);
-        	}
-        }
-        return answer.toString();
-    }
+		StringBuilder answer = null;
+		int max = 0;
+		HashMap<String, Integer> map = null;      
+
+		for(String com : table) {
+			String[] sp = com.split(" ");
+			map = new HashMap<>();
+
+			for(int i = 1; i < sp.length ;i++) {
+				map.put(sp[i], sp.length - i);
+			}
+
+			int sum = 0;   	
+			for(int i = 0 ; i < languages.length ;i++) {
+				sum += IsValueNull(map.get(languages[i])) * preference[i];
+			}
+			if(sum > max) {
+				max = sum;
+				answer = new StringBuilder(sp[0]);
+			}
+			else if(sum == max && answer.toString().compareTo(sp[0]) > 0) {
+				answer = new StringBuilder(sp[0]);
+			}
+		}
+        	return answer.toString();
+   	}
 	
 	public static int IsValueNull(Integer num) {
 		if(num == null) {
