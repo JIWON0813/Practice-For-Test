@@ -1,7 +1,8 @@
 //null 체크 메소드 만들어서 사용 (두고두고 쓸 수 있어서) 
 //저런 numm체크 관련 메소드가 있는지 찾아봐도 안나와서 일단 만들어놓음 다시 찾아봐야겠음
   
-  public String solution(String[] table, String[] languages, int[] preference) {
+class Solution {
+	public String solution(String[] table, String[] languages, int[] preference) {
         StringBuilder answer = null;
         int max = 0;
         HashMap<String, Integer> map = null;      
@@ -35,3 +36,4 @@
 		}
 		return num;
 	}
+}
