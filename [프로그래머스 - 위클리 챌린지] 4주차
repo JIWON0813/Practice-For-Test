@@ -1,0 +1,37 @@
+//null 체크 메소드 만들어서 사용 (두고두고 쓸 수 있어서) 
+//저런 numm체크 관련 메소드가 있는지 찾아봐도 안나와서 일단 만들어놓음 다시 찾아봐야겠음
+  
+  public String solution(String[] table, String[] languages, int[] preference) {
+        StringBuilder answer = null;
+        int max = 0;
+        HashMap<String, Integer> map = null;      
+        
+        for(String com : table) {
+        	String[] sp = com.split(" ");
+        	map = new HashMap<>();
+        	
+        	for(int i = 1; i < sp.length ;i++) {
+        		map.put(sp[i], sp.length - i);
+        	}
+        	
+        	int sum = 0;   	
+        	for(int i = 0 ; i < languages.length ;i++) {
+        		sum += IsValueNull(map.get(languages[i])) * preference[i];
+        	}
+        	if(sum > max) {
+        		max = sum;
+        		answer = new StringBuilder(sp[0]);
+        	}
+        	else if(sum == max && answer.toString().compareTo(sp[0]) > 0) {
+        		answer = new StringBuilder(sp[0]);
+        	}
+        }
+        return answer.toString();
+    }
+	
+	public static int IsValueNull(Integer num) {
+		if(num == null) {
+			return 0;
+		}
+		return num;
+	}
