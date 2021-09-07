@@ -1,0 +1,67 @@
+//compareTo로 비교를 만들었는데 다른 사람의 문제풀이를 확인해보니 Arrays.sort 를 람다식으로 해결하는 방법이 있었음
+//보통 모델 객체의 필드값을 비교할 때 고정적인게 아니면 비즈니스 로직에서 정렬하므로 람다식이 더 좋아보임(상황 따라 다르긴 하지만)
+
+class Boxer implements Comparable<Boxer>{
+	int number;
+	double winRate;
+	int countOverWeight;
+	int weight;
+
+	public Boxer(int number, double winRate, int countOverWeight, int weight) {
+		this.number = number;
+		this.weight = weight;
+		this.winRate = winRate;
+		this.countOverWeight = countOverWeight;
+	}
+	
+	@Override
+	public int compareTo(Boxer other) {
+		if(this.winRate != other.winRate) {
+			return this.winRate > other.winRate ? -1 : 1;
+		}	
+		if(this.countOverWeight != other.countOverWeight) {
+			return this.countOverWeight > other.countOverWeight ? -1 : 1;
+		}
+		if(this.weight != other.weight) {
+			return this.weight > other.weight ? -1 : 1;
+		}
+		
+		return this.number < other.number ? -1 : 1;
+	}
+}
+
+class Solution {
+	public int[] solution(int[] weights, String[] record) {
+        LinkedList<Boxer> list = new LinkedList<>();
+        int total = 0, winCount = 0, winCountOverWeight = 0;
+    	
+        for(int i = 0 ; i < record.length ; i++) {
+        	total = 0;
+        	winCount = 0;
+        	winCountOverWeight = 0;
+        	for(int index = 0 ; index < record[i].length() ; index++) {
+        		char score = record[i].charAt(index);
+        		if(score == 'W') {
+        			if(weights[i] < weights[index]) {
+        				winCountOverWeight++;
+        			}
+        			total++;
+        			winCount++;
+        		}
+        		else if(score == 'L') {
+        			total++;
+        		}
+        	}
+        	double winRate = total == 0 ? 0 : (double)winCount / (double)total;
+        	list.add(new Boxer(i, winRate, winCountOverWeight, weights[i]));
+        }
+        
+        Collections.sort(list);
+        int[] answer = new int[list.size()];
+        
+        for(int i = 0 ; i < list.size() ; i++) {
+        	answer[i] = list.get(i).number + 1;
+        }
+        return answer;
+    }
+}
