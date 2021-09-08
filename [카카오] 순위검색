@@ -3,6 +3,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
+//효율성 탈락
+//Stream으로 깔끔하게 하려고 했지만 그렇게 깔끔하지도 않음
+// 효율성은 단순 루프로는 안될 것 같음 효율성을 뚫기 위해서는 소스가 많이 더러워 질 것 같음(추후 효율성 고려 로직 수정)
+// 클래스 필드는 은닉화 해야하지만 lombok 사용 불가로 코딩테스트에서는 그냥 직접참조
+
 class Applicant{
 	
 	String language;
