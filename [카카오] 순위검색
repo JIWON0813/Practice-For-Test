@@ -1,0 +1,60 @@
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Stream;
+
+class Applicant{
+	
+	String language;
+	String part;
+	String career;
+	String food;
+	int score;
+	
+	public Applicant(String language, String part, String career, String food, int score) {
+		super();
+		this.language = language;
+		this.part = part;
+		this.career = career;
+		this.food = food;
+		this.score = score;
+	}
+}
+
+class Solution {
+	public int[] solution(String[] info, String[] query) {
+        int[] answer = new int[query.length];
+        List<Applicant> list = new LinkedList<>(); 
+        for(String person : info) {
+        	String[] data = person.split(" ");
+        	list.add(new Applicant(data[0],data[1],data[2],data[3],Integer.parseInt(data[4])));
+        }
+        
+        Stream<Applicant> stream = list.stream();
+        
+        for(int i = 0 ; i < query.length ; i++) {
+        	String[] data = query[i].split(" and ");
+        	String[] temp = data[3].split(" ");
+        	int score = Integer.parseInt(temp[1]);
+        	data[3] = temp[0];
+        	stream = list.stream();
+        	
+        	if(data[0].equals("-") == false) {
+        		stream = stream.filter(x -> x.language.equals(data[0]));
+        	}
+        	if(data[1].equals("-") == false) {
+        		stream = stream.filter(x -> x.part.equals(data[1]));
+        	}
+        	if(data[2].equals("-") == false) {
+        		stream = stream.filter(x -> x.career.equals(data[2]));
+        	}
+        	if(data[3].equals("-") == false) {
+        		stream = stream.filter(x -> x.food.equals(data[3]));
+        	}
+        	stream = stream.filter(x -> x.score >= score);
+        	answer[i] = (int)stream.count();
+        }
+        
+        return answer;
+    }
+}
