@@ -1,0 +1,110 @@
+class Solution{
+	
+	static int MAXSIZE = 5; // 행 , 열 사이즈 5라는 고정 사이즈가 문제에서 주어짐
+	
+    public int[] solution(String[][] places) {
+        int[] answer = new int[MAXSIZE];
+        for(int i = 0 ; i < MAXSIZE ; i++) {
+        	String[] list = places[i];
+        	boolean check = false;
+        	for(int y = 0 ; y < MAXSIZE ; y++) {
+        		String place = list[y];
+        		if(place.contains("P")) {
+        			for(int x = 0 ; x < MAXSIZE ; x++) {
+        				if(place.charAt(x) == 'P') {
+        					check = checkBlock(list,x,y);
+        				}
+        				if(check) {
+        					break;
+        				}
+        			}
+        		}
+        		if(check) {
+        			break;
+        		}
+        	}
+        	if(check) {
+        		answer[i] = 0;
+        	}
+        	else {
+        		answer[i] = 1;
+        	}
+        }
+        return answer;
+    }
+    
+    public boolean nextBlock(String[] place, int x, int y, boolean isX, int from) {
+		switch(place[y].charAt(x)) {
+			case 'P' :
+				return true;  			
+			case 'X' :
+				return false;
+			default :
+				return checkSecondBlock(place,x,y, isX, from);
+		}
+    }
+    
+    public boolean checkIndex(String[] place, int x, int y, boolean isX, int from) {
+    	boolean result = false;
+    	if(isX ? checkPosition(x) : checkPosition(y)) {
+    		result = nextBlock(place,x,y, isX, from);
+    	}
+    	return result;
+    }
+    
+    public boolean checkBlock(String[] place, int x, int y) {
+    	boolean result = false;
+    	
+    	result = checkIndex(place, x-1, y, true, 1);
+    	if(!result) {
+    		result = checkIndex(place, x+1, y, true, -1);
+    	}
+    	if(!result) {
+    		result = checkIndex(place, x, y-1, false, 1);
+    	}
+    	if(!result) {
+    		result = checkIndex(place, x, y+1, false, -1);
+    	}
+    	
+    	return result;
+    }
+    
+    public boolean checkSecondBlock(String[] place, int x, int y, boolean isX, int from) {
+    	boolean result = false;
+    	
+    	if(!(isX && from == -1)) {
+    		if(checkPosition(x-1)) {
+    			if(place[y].charAt(x-1) == 'P') {
+        			return true;
+        		}
+    		}
+    	}
+    	if(!(isX && from == 1)) {
+    		if(checkPosition(x+1)) {
+    			if(place[y].charAt(x+1) == 'P') {
+        			return true;
+        		}
+    		}
+    	}
+    	if(!(!isX && from == -1)) {
+    		if(checkPosition(y-1)) {
+    			if(place[y-1].charAt(x) == 'P') {
+        			return true;
+        		}
+    		}
+    	}
+    	if(!(!isX && from == 1)) {
+    		if(checkPosition(y+1)) {
+    			if(place[y+1].charAt(x) == 'P') {
+        			return true;
+        		}
+    		}
+    	}
+    	
+    	return result;
+    }
+    
+    public boolean checkPosition(int index) {
+    	return index > -1 && index < MAXSIZE;
+    }
+}
