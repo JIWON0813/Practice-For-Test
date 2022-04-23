@@ -25,7 +25,7 @@
 4. 객체 프로퍼티는 은닉화를 해야하지만 lombok 사용 불가능이라 getter,setter 를 직접 선언해주면 너무 쓸데없는 부분에서 길어져서 해당 부분은 그냥 직접 참조
 <br><br><br>
 
->4. [[카카오] 거리두기 확인하기](https://github.com/JIWON0813/Practice-For-Test/blob/master/%5B%EC%B9%B4%EC%B9%B4%EC%98%A4%5D%20%EA%B1%B0%EB%A6%AC%EB%91%90%EA%B8%B0%20%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0)
+>4. [[카카오] 거리두기 확인하기](https://github.com/JIWON0813/Practice-For-Test/blob/master/%5B%EC%B9%B4%EC%B9%B4%EC%98%A4%5D%20%EC%8B%A0%EA%B3%A0%20%EA%B2%B0%EA%B3%BC%20%EB%B0%9B%EA%B8%B0%20in%20Python)
 
 <h4>느낀점</h4>
 1. 그냥 dfs나 bfs를 활용하는게 더 깔끔했을 것 같다<br>
@@ -33,4 +33,11 @@
 3. checkBlock과 checkSecondBlock을 하나의 메소드로 합쳐야 하는데 문제를 빨리 푸는데 급해 하나를 늘려버림<br>
 4. 사실상 범위가 정해져있고(범위5), 거리두기의 거리도 정해져있어(최대2) 해당 문제를 푸는데는 쉬웠지만 주어진 숫자가 바뀐다면 유지보수하기에는 정말 안좋은 소스<br>
 5. 추후 유지보수에 용이한 소스로 변경해야함
+<br><br><br>
+
+>5. [[카카오] 신고 결과 받기](https://github.com/JIWON0813/Practice-For-Test/blob/master/%5B%EC%B9%B4%EC%B9%B4%EC%98%A4%5D%20%EC%8B%A0%EA%B3%A0%20%EA%B2%B0%EA%B3%BC%20%EB%B0%9B%EA%B8%B0%20in%20Python)
+
+<h4>느낀점</h4>
+1. 문제 자체는 어렵지 않았음 중복 해결을 해야 효율성이 나오는 문제였다  
+2. 자바보다 파이썬으로 코딩테스트하는게 너무 좋다.. 차이가 너무 심함 앞으로는 파이썬으로 문제푸는 연습 할 예정  
 <br><br><br>
