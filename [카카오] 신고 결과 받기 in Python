@@ -1,0 +1,27 @@
+def solution(id_list, report, k):
+    answer = [0 for _ in range(len(id_list))]
+
+    report = set(report)
+
+    dic = {}
+    stopdic = {}
+
+    for id in id_list:
+        dic[id] = list()
+    
+    for data in report:
+        sp = data.split(" ")
+        dic[sp[0]].append(sp[1])
+        if sp[1] in stopdic:
+            stopdic[sp[1]] = stopdic[sp[1]] + 1
+        else:
+            stopdic[sp[1]] = 1
+    
+    for key,v in stopdic.items():
+        if v >= k:
+            for k2,v2 in dic.items():
+                if key in v2:
+                    index = id_list.index(k2)
+                    answer[index] +=1
+    
+    return answer
